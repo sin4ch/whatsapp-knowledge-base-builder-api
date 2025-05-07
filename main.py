@@ -2,11 +2,9 @@ import os
 from fastapi import FastAPI, Request, HTTPException, Depends, Query
 from fastapi.responses import PlainTextResponse
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
-from typing import List, Annotated
-import models
+from typing import Annotated
 import crud
-from models import WhatsAppPayload, StoredMessage
+from models import WhatsAppPayload
 from database import create_table_and_start_db, get_db
 from dotenv import load_dotenv
 
