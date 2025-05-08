@@ -7,13 +7,14 @@ import crud
 from models import WhatsAppPayload
 from database import create_table_and_start_db, get_db
 from dotenv import load_dotenv
+from contextlib import asynccontextmanager
 
 load_dotenv()
 VERIFY_TOKEN = os.getenv("WHATSAPP_VERIFY_TOKEN")
 app = FastAPI()
 
-@app.lifespan("startup")
-async def on_startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     print("Application startup: Creating database and tables if they don't exist...")
     create_table_and_start_db() 
     print("Database and tables should be ready.")
@@ -41,6 +42,7 @@ async def receive_whatsapp_message(
     print("Received POST request on /webhook/whatsapp")
     try:
         for entry in payload.entry:
+            print(f"Entry: {entry}")
             for change in entry.changes:
                 if change.field == "messages" and change.value.messages:
                     for message_in_payload in change.value.messages:

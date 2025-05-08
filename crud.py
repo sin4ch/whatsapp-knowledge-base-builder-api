@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-import models 
+import models
 
-def add_message_to_db(db_session: Session, message_payload: models.Messages, value_payload: models.Value) -> models.StoredMessage:
+def create_stored_db(db_session: Session, message_payload: models.Message, value_payload: models.Value) -> models.StoredMessage:
     """
     Creates and stores a new message in the database.
     """
@@ -13,10 +13,10 @@ def add_message_to_db(db_session: Session, message_payload: models.Messages, val
         raise ValueError("Message does not contain text body.")
 
     db_message = models.StoredMessage(
-        sender_wa_id=sender_wa_id,
+        sender_phone_number=sender_wa_id,
         sender_name=sender_name,
         message_text=message_payload.text.body,
-        message_timestamp=message_payload.timestamp,
+        timestamp=message_payload.timestamp,
         processed_by_llm=False
     )
     db_session.add(db_message)
